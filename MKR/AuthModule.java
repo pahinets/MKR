@@ -1,23 +1,27 @@
 package MKR;
 
 public class AuthModule implements ISubscriber {
+    
+    // Реалізація методу підписника (якщо модуль має реагувати на події інших)
     @Override
     public void update(String message) {
-        // Auth може реагувати на інші події, якщо потрібно
+        // Наприклад, при помилці можна блокувати ввід
     }
 
-    // Метод входу, який запускає ланцюжок подій
+    // Бізнес-логіка: Успішний вхід
     public void loginUser(String username) {
-        System.out.println("\n--- [AuthModule] Спроба входу користувача " + username + " ---");
-        System.out.println("[AuthModule] Користувач авторизувався.");
-
-        // Звертаємось до Singleton і повідомляємо всіх
+        System.out.println("\n--- [Auth] Користувач " + username + " намагається увійти ---");
+        System.out.println("[Auth] Авторизація успішна.");
+        
+        // Виклик Singleton для сповіщення інших
         EventManager.getInstance().notify("user_login");
     }
 
-    // Метод імітації помилки
+    // Бізнес-логіка: Помилка
     public void triggerError() {
-        System.out.println("\n--- [AuthModule] Виявлено проблему безпеки ---");
+        System.out.println("\n--- [Auth] Детекція підозрілої активності ---");
+        
+        // Виклик Singleton для сповіщення інших
         EventManager.getInstance().notify("access_error");
     }
 }
