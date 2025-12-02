@@ -3,40 +3,45 @@ package MKR;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ПАТЕРН: Singleton (Одинак)
+ * Клас відповідає за управління підписками та розсилку повідомлень.
+ */
 public class EventManager {
-    // Статичне поле для зберігання єдиного екземпляра
+    
+    // --- Початок реалізації Singleton ---
     private static EventManager instance;
 
-    // Список підписників
-    private List<ISubscriber> subscribers;
-
-    // Приватний конструктор: забороняємо створення об'єктів через new
+    // Приватний конструктор: забороняємо створення через new
     private EventManager() {
         subscribers = new ArrayList<>();
     }
 
-    // Публічний статичний метод доступу (Lazy Initialization)
+    // Глобальна точка доступу
     public static EventManager getInstance() {
         if (instance == null) {
             instance = new EventManager();
         }
         return instance;
     }
+    // --- Кінець реалізації Singleton ---
 
-    // Підписатися на події
+    
+    // --- Початок реалізації Observer (Subject) ---
+    private List<ISubscriber> subscribers;
+
     public void subscribe(ISubscriber subscriber) {
         subscribers.add(subscriber);
     }
 
-    // Відписатися
     public void unsubscribe(ISubscriber subscriber) {
         subscribers.remove(subscriber);
     }
 
-    // Розсилка повідомлень (Notify)
     public void notify(String message) {
         for (ISubscriber subscriber : subscribers) {
             subscriber.update(message);
         }
     }
+    // --- Кінець реалізації Observer ---
 }
